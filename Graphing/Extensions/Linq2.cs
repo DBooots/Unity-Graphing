@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace KerbalWindTunnel.Extensions
+namespace Graphing.Extensions
 {
     public static class Linq2
     {

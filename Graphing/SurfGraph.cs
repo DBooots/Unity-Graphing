@@ -1,5 +1,5 @@
 ﻿using System;
-using KerbalWindTunnel.Extensions;
+using Graphing.Extensions;
 
 namespace Graphing
 {
