@@ -758,7 +758,7 @@ namespace Graphing
             for(int i = 0; i < graphs.Count; i++)
             {
                 if (graphs.Count > 1 && graphs[i].Visible)
-                    graphs[i].WriteToFile(filename, (sheetName != "" ? sheetName + "_" : "") + graphs[i].Name.Replace("/", "-").Replace("\\", "-"));
+                    graphs[i].WriteToFile(directory, filename, (sheetName != "" ? sheetName + "_" : "") + graphs[i].Name.Replace("/", "-").Replace("\\", "-"));
             }
         }
 
