@@ -1,3 +1,4 @@
 .vs/
 Graphing/bin/
 Graphing/obj/
+Graphing/GlobalSuppressions.cs

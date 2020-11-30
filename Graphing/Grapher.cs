@@ -451,7 +451,7 @@ namespace Graphing
         /// <summary>
         /// Implements <see cref="IDisposable"/>.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             UnityEngine.Object.Destroy(graphTex);
             UnityEngine.Object.Destroy(hAxisTex);
