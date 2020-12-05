@@ -284,8 +284,8 @@ namespace Graphing
             }
 
             bool boundAxesChanged = !(oldLimits[0] == XMin && oldLimits[1] == XMax && oldLimits[2] == YMin && oldLimits[3] == YMax);
-            //if (boundAxesChanged)
-            //    OnAxesChanged();
+            if (boundAxesChanged)
+                OnAxesChanged();
 
             if (axesDirty || boundAxesChanged || !(oldLimits[4] == ZMin && oldLimits[5] == ZMax && oldLimits[6] == CMin && oldLimits[7] == CMax))
             {
