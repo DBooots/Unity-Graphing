@@ -320,8 +320,10 @@ namespace Graphing
                 if (yMin < this.YMin || float.IsNaN(this.YMin)) this.YMin = yMin;
                 if (yMax > this.YMax || float.IsNaN(this.YMax)) this.YMax = yMax;
             }
-            if (float.IsNaN(XMin) || float.IsNaN(XMax) || float.IsNaN(YMin) || float.IsNaN(YMax))
-                XMin = XMax = YMin = YMax = 0;
+            if (float.IsNaN(XMin) || float.IsNaN(XMax))
+                XMin = XMax = 0;
+            if (float.IsNaN(YMin) || float.IsNaN(YMax))
+                YMin = YMax = 0;
             if (!(oldLimits[0] == XMin && oldLimits[1] == XMax && oldLimits[2] == YMin && oldLimits[3] == YMax))
             {
                 return true;
@@ -978,8 +980,13 @@ namespace Graphing
             if (dominantColorMap == null)
                 dominantColorMap = ColorMap.Jet_Dark;
 
-            if (float.IsNaN(XMin) || float.IsNaN(XMax) || float.IsNaN(YMin) || float.IsNaN(YMax) || float.IsNaN(ZMin) || float.IsNaN(ZMax))
-                XMin = XMax = YMin = YMax = ZMin = ZMax = 0;
+            if (float.IsNaN(XMin) || float.IsNaN(XMax))
+                XMin = XMax = 0;
+            if (float.IsNaN(YMin) || float.IsNaN(YMax))
+                YMin = YMax = 0;
+            if (float.IsNaN(ZMin) || float.IsNaN(ZMax))
+                ZMin = ZMax = 0;
+
             if (!(oldLimits[0] == XMin && oldLimits[1] == XMax && oldLimits[2] == YMin && oldLimits[3] == YMax && oldLimits[4] == ZMin && oldLimits[5] == ZMax))
             {
                 return true;
