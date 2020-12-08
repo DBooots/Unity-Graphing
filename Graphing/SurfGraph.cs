@@ -323,8 +323,8 @@ namespace Graphing
             catch (Exception ex) { UnityEngine.Debug.LogFormat("Unable to delete file:{0}", ex.Message); }
             
             string strCsv;
-            if (Name != "")
-                strCsv = String.Format("{0} [{1}]", Name, ZUnit != "" ? ZUnit : "-");
+            if (!String.IsNullOrEmpty(DisplayName))
+                strCsv = String.Format("{0} [{1}]", DisplayName, ZUnit != "" ? ZUnit : "-");
             else
                 strCsv = String.Format("{0}", ZUnit != "" ? ZUnit : "-");
 

@@ -14,6 +14,16 @@ namespace Graphing
         /// The name of the collection.
         /// </summary>
         public string Name { get; set; } = "";
+
+        private string displayName = "";
+        /// <summary>
+        /// The display name of the object. Can be different than the <see cref="Name"/> of the object.
+        /// </summary>
+        public string DisplayName
+        {
+            get => String.IsNullOrEmpty(displayName) ? Name : displayName;
+            set => displayName = value;
+        }
         /// <summary>
         /// The visibility status of the collection.
         /// </summary>
@@ -514,17 +524,17 @@ namespace Graphing
             List<IGraphable> visibleGraphs = graphs.Where(g => g.Visible).ToList();
             if (visibleGraphs.Count < 2)
                 return "";
-            int maxL = visibleGraphs[0].Name.Length;
+            int maxL = visibleGraphs[0].DisplayName.Length;
             int commonL = 0;
-            while (commonL < maxL && visibleGraphs[1].Name.StartsWith(visibleGraphs[0].Name.Substring(0, commonL + 1)))
+            while (commonL < maxL && visibleGraphs[1].DisplayName.StartsWith(visibleGraphs[0].DisplayName.Substring(0, commonL + 1)))
                 commonL++;
-            string nameSubstring = visibleGraphs[0].Name.Substring(0, commonL);
+            string nameSubstring = visibleGraphs[0].DisplayName.Substring(0, commonL);
             if (nameSubstring.EndsWith("("))
                 nameSubstring = nameSubstring.Substring(0, nameSubstring.Length - 1);
             
             for(int i = 2; i < visibleGraphs.Count; i++)
             {
-                if (!visibleGraphs[i].Name.StartsWith(nameSubstring))
+                if (!visibleGraphs[i].DisplayName.StartsWith(nameSubstring))
                     return "";
             }
             return nameSubstring;
@@ -794,8 +804,8 @@ namespace Graphing
 
             for (int i = 0; i < count; i++)
             {
-                if (lineGraphs[i].Name != "")
-                    strCsv += string.Format(",{0} [{1}]", lineGraphs[i].Name, lineGraphs[i].YUnit != "" ? lineGraphs[i].YUnit : "-");
+                if (lineGraphs[i].DisplayName != "")
+                    strCsv += string.Format(",{0} [{1}]", lineGraphs[i].DisplayName, lineGraphs[i].YUnit != "" ? lineGraphs[i].YUnit : "-");
                 else
                     strCsv += string.Format(",{0}", lineGraphs[i].YUnit != "" ? lineGraphs[i].YUnit : "-");
                 if (lineGraphs[i] is MetaLineGraph metaLineGraph)

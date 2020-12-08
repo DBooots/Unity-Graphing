@@ -195,7 +195,7 @@ namespace Graphing
         public virtual string GetFormattedValueAt(float x, float y, float width, float height, bool withName = false)
         {
             if (_values.Length <= 0) return "";
-            return String.Format("{2}{0:" + StringFormat + "}{1}", ValueAt(x, y, width, height), ZUnit, withName && Name != "" ? Name + ": " : "");
+            return String.Format("{2}{0:" + StringFormat + "}{1}", ValueAt(x, y, width, height), ZUnit, withName && !String.IsNullOrEmpty(DisplayName) ? DisplayName + ": " : "");
         }
 
         /// <summary>

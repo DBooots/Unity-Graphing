@@ -12,6 +12,10 @@ namespace Graphing
         /// </summary>
         string Name { get; }
         /// <summary>
+        /// The display name of the object. Can be different than the <see cref="Name"/> of the object.
+        /// </summary>
+        string DisplayName { get; set; }
+        /// <summary>
         /// The visibility status of the object.
         /// </summary>
         bool Visible { get; set; }
@@ -173,6 +177,16 @@ namespace Graphing
         /// The name of the object.
         /// </summary>
         public string Name { get; set; } = "";
+
+        private string displayName = "";
+        /// <summary>
+        /// The display name of the object. Can be different than the <see cref="Name"/> of the object.
+        /// </summary>
+        public string DisplayName
+        {
+            get => String.IsNullOrEmpty(displayName) ? Name : displayName;
+            set => displayName = value;
+        }
         /// <summary>
         /// The visibility status of the object.
         /// </summary>
@@ -219,7 +233,7 @@ namespace Graphing
         /// <summary>
         /// The name of the Y axis.
         /// </summary>
-        public virtual string YName { get => yName ?? Name; set => yName = value; }
+        public virtual string YName { get => String.IsNullOrEmpty(yName) ? DisplayName : yName; set => yName = value; }
         /// <summary>
         /// The unit for the X axis.
         /// </summary>
@@ -300,7 +314,7 @@ namespace Graphing
         /// <returns></returns>
         public virtual string GetFormattedValueAt(float x, float y, bool withName = false)
         {
-            return String.Format("{2}{0:" + StringFormat + "}{1}", ValueAt(x, y), YUnit, withName && Name != "" ? Name + ": " : "");
+            return String.Format("{2}{0:" + StringFormat + "}{1}", ValueAt(x, y), YUnit, withName && !String.IsNullOrEmpty(DisplayName) ? DisplayName + ": " : "");
         }
     }
 
@@ -329,7 +343,7 @@ namespace Graphing
         /// <summary>
         /// The name of the Z axis.
         /// </summary>
-        public string ZName { get { return zName ?? Name; } set { zName = value; } }
+        public string ZName { get { return String.IsNullOrEmpty(zName) ? DisplayName : zName; } set { zName = value; } }
 
         /// <summary>
         /// Gets a formatted value from the object given a selected coordinate.
@@ -340,7 +354,7 @@ namespace Graphing
         /// <returns></returns>
         public override string GetFormattedValueAt(float x, float y, bool withName = false)
         {
-            return String.Format("{2}{0:" + StringFormat + "}{1}", ValueAt(x, y), ZUnit, withName && Name != "" ? Name + ": " : "");
+            return String.Format("{2}{0:" + StringFormat + "}{1}", ValueAt(x, y), ZUnit, withName && !String.IsNullOrEmpty(DisplayName) ? DisplayName + ": " : "");
         }
     }
 }
