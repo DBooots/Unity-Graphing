@@ -80,7 +80,7 @@ namespace Graphing
                 if (!Filter(value))
                     return FilterColor;
                 if (useFunc)
-                    return colormapDelegate(value);
+                    return colormapDelegate(Mathf.Clamp01(value));
                 if (count == 1)
                     return colors[0];
                 int index = Mathf.FloorToInt(Mathf.Clamp01(value) * count);
