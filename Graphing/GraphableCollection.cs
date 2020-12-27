@@ -244,7 +244,11 @@ namespace Graphing
         /// <param name="graph"></param>
         public GraphableCollection(IGraphable graph)
         {
-            Add(graph);
+            if (graph == null)
+                return;
+            graphs.Add(graph);
+            graphDict.Add(graph.Name, graph);
+            graph.ValuesChanged += ValuesChangedSubscriber;
         }
         /// <summary>
         /// Constructs a <see cref="GraphableCollection"/> with the provided <see cref="IGraphable"/>s.
@@ -252,7 +256,15 @@ namespace Graphing
         /// <param name="graphs"></param>
         public GraphableCollection(IEnumerable<IGraphable> graphs)
         {
-            AddRange(graphs);
+            IEnumerator<IGraphable> enumerator = graphs.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                if (enumerator.Current == null)
+                    continue;
+                this.graphs.Add(enumerator.Current);
+                graphDict.Add(enumerator.Current.Name, enumerator.Current);
+                enumerator.Current.ValuesChanged += ValuesChangedSubscriber;
+            }
         }
 
         /// <summary>

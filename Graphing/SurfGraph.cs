@@ -51,17 +51,17 @@ namespace Graphing
         public SurfGraph(float[,] values, float xLeft, float xRight, float yBottom, float yTop) : this()
         {
             this._values = values;
-            this.XMin = xLeft;
-            this.XMax = xRight;
-            this.YMin = yBottom;
-            this.YMax = yTop;
+            this.xMin = xLeft;
+            this.xMax = xRight;
+            this.yMin = yBottom;
+            this.yMax = yTop;
             if (_values.GetUpperBound(0) < 0 || _values.GetUpperBound(1) < 0)
             {
-                ZMin = ZMax = 0;
+                zMin = zMax = 0;
                 return;
             }
-            this.ZMin = values.Min(true);
-            this.ZMax = values.Max(true);
+            this.zMin = values.Min(true);
+            this.zMax = values.Max(true);
         }
 
         /// <summary>

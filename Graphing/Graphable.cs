@@ -208,19 +208,23 @@ namespace Graphing
         /// <summary>
         /// The lower X bound of the object.
         /// </summary>
-        public virtual float XMin { get; set; }
+        public virtual float XMin { get => xMin; set => xMin = value; }
+        protected float xMin;
         /// <summary>
         /// The upper X bound of the object.
         /// </summary>
-        public virtual float XMax { get; set; }
+        public virtual float XMax { get => xMax; set => xMax = value; }
+        protected float xMax;
         /// <summary>
         /// The lower Y bound of the object.
         /// </summary>
-        public virtual float YMin { get; set; }
+        public virtual float YMin { get => yMin; set => yMin = value; }
+        protected float yMin;
         /// <summary>
         /// The upper Y bound of the object.
         /// </summary>
-        public virtual float YMax { get; set; }
+        public virtual float YMax { get => yMax; set => yMax = value; }
+        protected float yMax;
         /// <summary>
         /// A flag indicating if this object should be transposed before drawing.
         /// </summary>
@@ -326,11 +330,13 @@ namespace Graphing
         /// <summary>
         /// The lower Z bound of the object.
         /// </summary>
-        public float ZMin { get; set; }
+        public float ZMin { get => zMin; set => zMin = value; }
+        protected float zMin;
         /// <summary>
         /// The upper Z bound of the object.
         /// </summary>
-        public float ZMax { get; set; }
+        public float ZMax { get => zMax; set => zMax = value; }
+        protected float zMax;
         /// <summary>
         /// The unit for the Z axis.
         /// </summary>

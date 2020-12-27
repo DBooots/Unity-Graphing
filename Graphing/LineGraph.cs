@@ -18,52 +18,8 @@ namespace Graphing
         /// </summary>
         public UnityEngine.Vector2[] Values
         {
-            get { return _values; }
-            private set
-            {
-                _values = value;
-                if (_values.Length <= 0)
-                {
-                    YMin = YMax = XMin = XMax = 0;
-                    return;
-                }
-                float xLeft = float.MaxValue;
-                float xRight = float.MinValue;
-                float yMin = float.MaxValue;
-                float yMax = float.MinValue;
-                for (int i = value.Length - 1; i >= 0; i--)
-                {
-                    if (!float.IsInfinity(value[i].x) && !float.IsNaN(value[i].x))
-                    {
-                        xLeft = Math.Min(xLeft, value[i].x);
-                        xRight = Math.Max(xRight, value[i].x);
-                    }
-                    if (!float.IsInfinity(value[i].y) && !float.IsNaN(value[i].y))
-                    {
-                        yMin = Math.Min(yMin, value[i].y);
-                        yMax = Math.Max(yMax, value[i].y);
-                    }
-                }
-                this.XMax = xRight;
-                this.XMin = xLeft;
-                this.YMax = yMax;
-                this.YMin = yMin;
-
-                float step = (xRight - xLeft) / (value.Length - 1);
-                this.sorted = true;
-                this.equalSteps = true;
-                for (int i = value.Length - 1; i >= 0; i--)
-                {
-                    if (equalSteps && _values[i].x != xLeft + step * i)
-                        equalSteps = false;
-                    if (sorted && i > 0 && _values[i].x < _values[i - 1].x)
-                        sorted = false;
-                    if (!equalSteps && !sorted)
-                        break;
-                }
-
-                OnValuesChanged(null);
-            }
+            get => _values;
+            private set => SetValues(value);
         }
         protected bool sorted = false;
         protected bool equalSteps = false;
@@ -76,7 +32,7 @@ namespace Graphing
         /// <param name="values"></param>
         public LineGraph(float[] values, float xLeft, float xRight)
         {
-            SetValues(values, xLeft, xRight);
+            SetValuesInternal(values, xLeft, xRight);
         }
         /// <summary>
         /// Constructs a new <see cref="LineGraph"/> with the provided points.
@@ -84,7 +40,7 @@ namespace Graphing
         /// <param name="values"></param>
         public LineGraph(UnityEngine.Vector2[] values)
         {
-            this.Values = values;
+            SetValuesInternal(values);
         }
 
         /// <summary>
@@ -230,6 +186,11 @@ namespace Graphing
         /// <param name="values"></param>
         public void SetValues(float[] values, float xLeft, float xRight)
         {
+            SetValues(values, xLeft, xRight);
+            OnValuesChanged(null);
+        }
+        private void SetValuesInternal(float[] values, float xLeft, float xRight)
+        {
             this._values = new UnityEngine.Vector2[values.Length];
             if (_values.Length <= 0)
             {
@@ -248,14 +209,12 @@ namespace Graphing
                     yMax = Math.Max(yMax, _values[i].y);
                 }
             }
-            this.XMax = xRight;
-            this.XMin = xLeft;
-            this.YMax = yMax;
-            this.YMin = yMin;
+            this.xMax = xRight;
+            this.xMin = xLeft;
+            this.yMax = yMax;
+            this.yMin = yMin;
             this.sorted = true;
             this.equalSteps = true;
-
-            OnValuesChanged(null);
         }
         /// <summary>
         /// Sets the values in the line.
@@ -263,7 +222,51 @@ namespace Graphing
         /// <param name="values"></param>
         public void SetValues(UnityEngine.Vector2[] values)
         {
-            this.Values = values;
+            SetValuesInternal(values);
+            OnValuesChanged(null);
+        }
+        private void SetValuesInternal(UnityEngine.Vector2[] values)
+        {
+            _values = values;
+            if (_values.Length <= 0)
+            {
+                YMin = YMax = XMin = XMax = 0;
+                return;
+            }
+            float xLeft = float.MaxValue;
+            float xRight = float.MinValue;
+            float yMin = float.MaxValue;
+            float yMax = float.MinValue;
+            for (int i = values.Length - 1; i >= 0; i--)
+            {
+                if (!float.IsInfinity(values[i].x) && !float.IsNaN(values[i].x))
+                {
+                    xLeft = Math.Min(xLeft, values[i].x);
+                    xRight = Math.Max(xRight, values[i].x);
+                }
+                if (!float.IsInfinity(values[i].y) && !float.IsNaN(values[i].y))
+                {
+                    yMin = Math.Min(yMin, values[i].y);
+                    yMax = Math.Max(yMax, values[i].y);
+                }
+            }
+            this.xMax = xRight;
+            this.xMin = xLeft;
+            this.yMax = yMax;
+            this.yMin = yMin;
+
+            float step = (xRight - xLeft) / (values.Length - 1);
+            this.sorted = true;
+            this.equalSteps = true;
+            for (int i = values.Length - 1; i >= 0; i--)
+            {
+                if (equalSteps && _values[i].x != xLeft + step * i)
+                    equalSteps = false;
+                if (sorted && i > 0 && _values[i].x < _values[i - 1].x)
+                    sorted = false;
+                if (!equalSteps && !sorted)
+                    break;
+            }
         }
 
         /// <summary>

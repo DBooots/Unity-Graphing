@@ -18,48 +18,8 @@ namespace Graphing
         /// </summary>
         public UnityEngine.Vector3[] Values
         {
-            get { return _values; }
-            set
-            {
-                _values = value;
-                if (_values.Length <= 0)
-                {
-                    YMin = YMax = XMin = XMax = ZMin = ZMax = 0;
-                    return;
-                }
-                float xLeft = float.MaxValue;
-                float xRight = float.MinValue;
-                float yMin = float.MaxValue;
-                float yMax = float.MinValue;
-                float zMin = float.MaxValue;
-                float zMax = float.MinValue;
-                for (int i = value.Length - 1; i >= 0; i--)
-                {
-                    if (!float.IsInfinity(value[i].x) && !float.IsNaN(value[i].x))
-                    {
-                        xLeft = Math.Min(xLeft, value[i].x);
-                        xRight = Math.Max(xRight, value[i].x);
-                    }
-                    if (!float.IsInfinity(value[i].y) && !float.IsNaN(value[i].y))
-                    {
-                        yMin = Math.Min(yMin, value[i].y);
-                        yMax = Math.Max(yMax, value[i].y);
-                    }
-                    if (!float.IsInfinity(value[i].z) && !float.IsNaN(value[i].z))
-                    {
-                        zMin = Math.Min(zMin, value[i].z);
-                        zMax = Math.Max(zMax, value[i].z);
-                    }
-                }
-                this.XMax = xRight;
-                this.XMin = xLeft;
-                this.YMax = yMax;
-                this.YMin = yMin;
-                this.ZMax = zMax;
-                this.ZMin = zMin;
-
-                OnValuesChanged(null);
-            }
+            get => _values;
+            set => SetValues(value);
         }
 
         /// <summary>
@@ -68,7 +28,7 @@ namespace Graphing
         /// <param name="values"></param>
         public Line3Graph(UnityEngine.Vector3[] values)
         {
-            this.Values = values;
+            this.SetValuesInternal(values);
         }
 
         /// <summary>
@@ -171,7 +131,48 @@ namespace Graphing
         /// <param name="values"></param>
         public void SetValues(UnityEngine.Vector3[] values)
         {
-            this.Values = values;
+            SetValuesInternal(values);
+            OnValuesChanged(null);
+        }
+
+        private void SetValuesInternal(UnityEngine.Vector3[] values)
+        {
+            _values = values;
+            if (_values.Length <= 0)
+            {
+                YMin = YMax = XMin = XMax = ZMin = ZMax = 0;
+                return;
+            }
+            float xLeft = float.MaxValue;
+            float xRight = float.MinValue;
+            float yMin = float.MaxValue;
+            float yMax = float.MinValue;
+            float zMin = float.MaxValue;
+            float zMax = float.MinValue;
+            for (int i = values.Length - 1; i >= 0; i--)
+            {
+                if (!float.IsInfinity(values[i].x) && !float.IsNaN(values[i].x))
+                {
+                    xLeft = Math.Min(xLeft, values[i].x);
+                    xRight = Math.Max(xRight, values[i].x);
+                }
+                if (!float.IsInfinity(values[i].y) && !float.IsNaN(values[i].y))
+                {
+                    yMin = Math.Min(yMin, values[i].y);
+                    yMax = Math.Max(yMax, values[i].y);
+                }
+                if (!float.IsInfinity(values[i].z) && !float.IsNaN(values[i].z))
+                {
+                    zMin = Math.Min(zMin, values[i].z);
+                    zMax = Math.Max(zMax, values[i].z);
+                }
+            }
+            this.xMax = xRight;
+            this.xMin = xLeft;
+            this.yMax = yMax;
+            this.yMin = yMin;
+            this.zMax = zMax;
+            this.zMin = zMin;
         }
 
         /// <summary>
