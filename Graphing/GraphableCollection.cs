@@ -212,7 +212,7 @@ namespace Graphing
         /// </summary>
         public int Count { get => graphs.Count; }
 
-        bool ICollection<IGraphable>.IsReadOnly => false;
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Gets or sets a contained <see cref="IGraphable"/> by index.
