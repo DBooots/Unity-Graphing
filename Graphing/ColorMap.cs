@@ -6,7 +6,7 @@ namespace Graphing
     /// <summary>
     /// A class that maps input values to a <see cref="Color"/>.
     /// </summary>
-    public class ColorMap
+    public sealed class ColorMap
     {
         /// <summary>
         /// Visually similar to MATLAB's Jet color map.

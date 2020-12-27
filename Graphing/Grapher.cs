@@ -7,7 +7,7 @@ namespace Graphing
     /// <summary>
     /// The class representing a graphing frame on-screen.
     /// </summary>
-    public class Grapher : GraphableCollection3, IDisposable
+    public sealed class Grapher : GraphableCollection3, IDisposable
     {
         /// <summary>
         /// The actual graph texture.
@@ -73,12 +73,12 @@ namespace Graphing
         internal delegate void ExternalValueChangeHandler(object sender, ExternalValueChangeEventArgs e);
         internal event ExternalValueChangeHandler ValueChangedExternally;
 
-        protected internal float selfXmin, selfXmax, selfYmin, selfYmax, selfZmin, selfZmax;
-        protected internal float setXmin, setXmax, setYmin, setYmax, setZmin, setZmax;
-        protected internal bool[] useSelfAxes = new bool[] { true, true, true };
+        internal float selfXmin, selfXmax, selfYmin, selfYmax, selfZmin, selfZmax;
+        internal float setXmin, setXmax, setYmin, setYmax, setZmin, setZmax;
+        internal bool[] useSelfAxes = new bool[] { true, true, true };
 
-        protected bool axesDirty = true;
-        protected bool graphDirty = true;
+        bool axesDirty = true;
+        bool graphDirty = true;
 
         /// <summary>
         /// Constructs new <see cref="Grapher"/> with the specified size for the graphing frame.
@@ -455,7 +455,7 @@ namespace Graphing
         /// <summary>
         /// Implements <see cref="IDisposable"/>.
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
             UnityEngine.Object.Destroy(graphTex);
             UnityEngine.Object.Destroy(hAxisTex);

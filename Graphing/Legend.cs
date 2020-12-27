@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Graphing
 {
-    public class Legend
+    public sealed class Legend
     {
         public static readonly Color[] Bright = new Color[]
             { Color.green, Color.yellow, Color.red, Color.cyan, new Color(148, 0, 211), new Color(255, 140, 0), Color.blue };

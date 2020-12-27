@@ -9,7 +9,7 @@ namespace Graphing
     /// A class that generates a KSP window that allows users to set custom
     /// bounds for the graph.
     /// </summary>
-    public class AxesSettingWindow
+    public sealed class AxesSettingWindow
     {
         /// <summary>
         /// The <see cref="Grapher"/> that is the parent of this window and
