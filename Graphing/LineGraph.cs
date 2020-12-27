@@ -186,7 +186,7 @@ namespace Graphing
         /// <param name="values"></param>
         public void SetValues(float[] values, float xLeft, float xRight)
         {
-            SetValues(values, xLeft, xRight);
+            SetValuesInternal(values, xLeft, xRight);
             OnValuesChanged(null);
         }
         private void SetValuesInternal(float[] values, float xLeft, float xRight)
