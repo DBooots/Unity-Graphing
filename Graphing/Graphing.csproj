@@ -57,8 +57,8 @@
     <Compile Include="Axis.cs" />
     <Compile Include="ColorMap.cs" />
     <Compile Include="DrawingHelper.cs" />
+    <Compile Include="EventArgs.cs" />
     <Compile Include="Extensions\Linq2.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Graphable.cs" />
     <Compile Include="GraphableCollection.cs" />
     <Compile Include="Grapher.cs" />
