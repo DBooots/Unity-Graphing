@@ -66,11 +66,11 @@ namespace Graphing
         /// </summary>
         public Axis colorAxis = new Axis(0, 0);
 
-        public delegate void AxesChangeEventHandler(Grapher sender, float xMin, float xMax, float yMin, float yMax, float zMin, float zMax);
+        public delegate void AxesChangeEventHandler(object sender, AxesChangeEventArgs e);
         public event AxesChangeEventHandler AxesChanged;
-        public delegate void AxesChangeRequestedEventHandler(Grapher sender, int index, ref float min, ref float max);
+        public delegate void AxesChangeRequestedEventHandler(object sender, AxesChangeRequestedEventArgs e);
         public event AxesChangeRequestedEventHandler AxesChangeRequested;
-        internal delegate void ExternalValueChangeHandler(Grapher sender, int index, float min, float max);
+        internal delegate void ExternalValueChangeHandler(object sender, ExternalValueChangeEventArgs e);
         internal event ExternalValueChangeHandler ValueChangedExternally;
 
         protected internal float selfXmin, selfXmax, selfYmin, selfYmax, selfZmin, selfZmax;
@@ -118,40 +118,44 @@ namespace Graphing
         /// <summary>
         /// Force the specified axis to have certain bounds.
         /// </summary>
-        /// <param name="index">0 = x, 1 = y, 2 = z</param>
+        /// <param name="axisIndex">0 = x, 1 = y, 2 = z</param>
         /// <param name="min">The lower bound.</param>
         /// <param name="max">The upper bound.</param>
         /// <param name="delayRecalculate">When true, <see cref="Grapher.RecalculateLimits"/> must be explicitly called later.</param>
-        public void SetAxesLimits(int index, float min, float max, bool delayRecalculate = false)
+        public void SetAxesLimits(int axisIndex, float min, float max, bool delayRecalculate = false)
         {
-            if (index > 2 || float.IsNaN(min) || float.IsNaN(max))
-                return;
+            if (axisIndex > 2 || axisIndex < 0)
+                throw new ArgumentException("Axis index must be between 0 and 2, inclusive.", "axisIndex");
+            if (float.IsNaN(min) || float.IsInfinity(min))
+                throw new ArgumentException("Axis limit must be a real number.", "min");
+            if (float.IsNaN(max) || float.IsInfinity(max))
+                throw new ArgumentException("Axis limit must be a real number.", "max");
 
             float tempMin = min, tempMax = max;
-            switch (index)
+            switch (axisIndex)
             {
                 case 0:
                     if (min != setXmin || max != setXmax)
-                        OnAxesChangeRequested(index, ref min, ref max);
+                        OnAxesChangeRequested(axisIndex, ref min, ref max);
                     setXmin = min;
                     setXmax = max;
                     break;
                 case 1:
                     if (min != setYmin || max != setYmax)
-                        OnAxesChangeRequested(index, ref min, ref max);
+                        OnAxesChangeRequested(axisIndex, ref min, ref max);
                     setYmin = min;
                     setYmax = max;
                     break;
                 case 2:
                     if (min != setZmin || max != setZmax)
-                        OnAxesChangeRequested(index, ref min, ref max);
+                        OnAxesChangeRequested(axisIndex, ref min, ref max);
                     setZmin = min;
                     setZmax = max;
                     break;
             }
             if (tempMin != min || tempMax != max)
-                ValueChangedExternally?.Invoke(this, index, min, max);
-            useSelfAxes[index] = false;
+                ValueChangedExternally?.Invoke(this, new ExternalValueChangeEventArgs(axisIndex, min, max));
+            useSelfAxes[axisIndex] = false;
 
             if (!delayRecalculate)
                 RecalculateLimits();
@@ -204,9 +208,9 @@ namespace Graphing
         }
 
         public void OnAxesChanged()
-            => this.AxesChanged?.Invoke(this, XMin, XMax, YMin, YMax, ZMin, ZMax);
+            => this.AxesChanged?.Invoke(this, new AxesChangeEventArgs(XMin, XMax, YMin, YMax, ZMin, ZMax));
         public void OnAxesChangeRequested(int index, ref float min, ref float max)
-            => this.AxesChangeRequested?.Invoke(this, index, ref min, ref max);
+            => this.AxesChangeRequested?.Invoke(this, new AxesChangeRequestedEventArgs(index, min, max));
 
         /// <summary>
         /// Recalculates the reported limits of the <see cref="GraphableCollection"/>.

@@ -182,16 +182,16 @@ namespace Graphing
             field.uiItem.GetComponent<TMPro.TMP_InputField>().text = text;
         }
 
-        private void OnValueChanged(Grapher sender, int index, float min, float max)
+        private void OnValueChanged(object sender, ExternalValueChangeEventArgs eventArgs)
         {
             if (sender != grapher)
                 return;
 
-            switch (index)
+            switch (eventArgs.AxisIndex)
             {
-                case 0: SetText(xMinInput, min.ToString()); SetText(xMaxInput, max.ToString()); break;
-                case 1: SetText(yMinInput, min.ToString()); SetText(yMaxInput, max.ToString()); break;
-                case 2: SetText(zMinInput, min.ToString()); SetText(zMaxInput, max.ToString()); break;
+                case 0: SetText(xMinInput, eventArgs.Min.ToString()); SetText(xMaxInput, eventArgs.Max.ToString()); break;
+                case 1: SetText(yMinInput, eventArgs.Min.ToString()); SetText(yMaxInput, eventArgs.Max.ToString()); break;
+                case 2: SetText(zMinInput, eventArgs.Min.ToString()); SetText(zMaxInput, eventArgs.Max.ToString()); break;
             }
         }
     }
