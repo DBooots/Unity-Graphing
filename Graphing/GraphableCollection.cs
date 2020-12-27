@@ -752,7 +752,7 @@ namespace Graphing
 
             if (graphs.Count > 1 && graphs.All(g => g is LineGraph || !g.Visible))
             {
-                LineGraph[] lineGraphs = graphs.Select(g => g.Visible).Cast<LineGraph>().ToArray();
+                LineGraph[] lineGraphs = graphs.Where(g => g.Visible).Cast<LineGraph>().ToArray();
                 UnityEngine.Vector2[] basis = lineGraphs[0].Values;
                 int count = basis.Length;
 
