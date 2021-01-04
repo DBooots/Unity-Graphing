@@ -299,7 +299,7 @@ namespace Graphing
         /// Recalculates the reported limits of the <see cref="GraphableCollection"/>.
         /// </summary>
         /// <returns></returns>
-        public virtual bool RecalculateLimits()
+        public virtual bool RecalculateLimits(bool expandSurfFilter = false)
         {
             float[] oldLimits = new float[] { XMin, XMax, YMin, YMax};
             XMin = XMax = YMin = YMax = float.NaN;
@@ -323,7 +323,7 @@ namespace Graphing
                     }
                     else if (graphs[i] is SurfGraph surfGraph)
                     {
-                        GetLimitsAutoSurf(surfGraph, out xMin, out xMax, out yMin, out yMax);
+                        GetLimitsAutoSurf(surfGraph, out xMin, out xMax, out yMin, out yMax, expandSurfFilter);
                     }
                     else if (graphs[i] is OutlineMask outlineGraph)
                     {
@@ -353,7 +353,7 @@ namespace Graphing
             return false;
         }
 
-        protected void GetLimitsAutoSurf(SurfGraph surfGraph, out float xMin, out float xMax, out float yMin, out float yMax)
+        protected void GetLimitsAutoSurf(SurfGraph surfGraph, out float xMin, out float xMax, out float yMin, out float yMax, bool expandFilter = false)
         {
             float[,] values = surfGraph.Values;
             int width = values.GetUpperBound(0);
@@ -370,7 +370,9 @@ namespace Graphing
                     }
                 if (breakFlag) break;
             }
-            xMin = (surfGraph.XMax - surfGraph.XMin) / width * x;
+            if (expandFilter)
+                x = Math.Max(0, x - 1);
+            xMin = (surfGraph.XMax - surfGraph.XMin) / width * x + surfGraph.XMin;
 
             breakFlag = false;
             for (x = width; x >= 0; x--)
@@ -383,7 +385,9 @@ namespace Graphing
                     }
                 if (breakFlag) break;
             }
-            xMax = (surfGraph.XMax - surfGraph.XMin) / width * x;
+            if (expandFilter)
+                x = Math.Min(width, x + 1);
+            xMax = (surfGraph.XMax - surfGraph.XMin) / width * x + surfGraph.XMin;
 
             breakFlag = false;
             for (y = 0; y <= height; y++)
@@ -396,7 +400,9 @@ namespace Graphing
                     }
                 if (breakFlag) break;
             }
-            yMin = (surfGraph.YMax - surfGraph.YMin) / height * y;
+            if (expandFilter)
+                y = Math.Max(0, y - 1);
+            yMin = (surfGraph.YMax - surfGraph.YMin) / height * y + surfGraph.YMin;
 
             breakFlag = false;
             for (y = height; y >= 0; y--)
@@ -409,7 +415,9 @@ namespace Graphing
                     }
                 if (breakFlag) break;
             }
-            yMax = (surfGraph.YMax - surfGraph.YMin) / height * y;
+            if (expandFilter)
+                y = Math.Min(height, y + 1);
+            yMax = (surfGraph.YMax - surfGraph.YMin) / height * y + surfGraph.YMin;
 
             if (yMin > yMax)
             {
@@ -940,7 +948,7 @@ namespace Graphing
         /// Recalculates the reported limits of the <see cref="GraphableCollection"/>.
         /// </summary>
         /// <returns></returns>
-        public override bool RecalculateLimits()
+        public override bool RecalculateLimits(bool expandSurfFilter = false)
         {
             float[] oldLimits = new float[] { XMin, XMax, YMin, YMax, ZMin, ZMax };
             XMin = XMax = YMin = YMax = ZMin = ZMax = float.NaN;
@@ -978,7 +986,7 @@ namespace Graphing
                     }
                     else if (graphs[i] is SurfGraph surfGraph)
                     {
-                        GetLimitsAutoSurf(surfGraph, out xMin, out xMax, out yMin, out yMax);
+                        GetLimitsAutoSurf(surfGraph, out xMin, out xMax, out yMin, out yMax, expandSurfFilter);
                     }
                     else if (graphs[i] is OutlineMask outlineGraph)
                     {

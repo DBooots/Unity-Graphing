@@ -25,6 +25,10 @@ namespace Graphing
         /// The color axis texture.
         /// </summary>
         public UnityEngine.Texture2D cAxisTex;
+        /// <summary>
+        /// Should this grapher expand a trimmed surface graph to include the failing perimeter.
+        /// </summary>
+        public bool ExpandSurfFilter { get; set; }
 
         private AxesSettingWindow axesWindow;
 
@@ -216,11 +220,11 @@ namespace Graphing
         /// Recalculates the reported limits of the <see cref="GraphableCollection"/>.
         /// </summary>
         /// <returns></returns>
-        public override bool RecalculateLimits()
+        public override bool RecalculateLimits(bool expandSurfFilter = false)
         {
             float[] oldLimits = new float[] { XMin, XMax, YMin, YMax, ZMin, ZMax, CMin, CMax };
 
-            bool baseResult = base.RecalculateLimits();
+            bool baseResult = base.RecalculateLimits(expandSurfFilter || this.ExpandSurfFilter);
 
             CMin = CMax = float.NaN;
             for (int i = 0; i < graphs.Count; i++)
